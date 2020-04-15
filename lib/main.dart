@@ -15,34 +15,84 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(items: [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            title: Text("Home"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person),
-            title: Text("Profile"),
-          ),
-        ]),
-        tabBuilder: (context, i) {
-          return CupertinoTabView(
-            builder: (context) {
-              return CupertinoPageScaffold(
-                navigationBar: CupertinoNavigationBar(
-                  middle: (i == 0) ? Text("Home") : Text("Profile"),
+      tabBar: CupertinoTabBar(items: [
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.home),
+          title: Text("Home"),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.person),
+          title: Text("Profile"),
+        ),
+      ]),
+      tabBuilder: (context, i) {
+        return CupertinoTabView(builder: (context) {
+          return CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              middle: (i == 0) ? Text("Home") : Text("Profile"),
+            ),
+            child: Center(
+              child: CupertinoButton(
+                child: Text(
+                  "This is tab #$i",
+                  style: CupertinoTheme.of(context)
+                      .textTheme
+                      .actionTextStyle
+                      .copyWith(fontSize: 32),
                 ),
-                child: Center(
-                  child: Text(
-                    "This is tab #$i",
-                    style: CupertinoTheme.of(context)
-                        .textTheme
-                        .navLargeTitleTextStyle,
-                  ),
-                ),
-              );
-            },
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(builder: (context) {
+                      return DetailScreen(i == 0 ? "Home" : "Profile");
+                    }),
+                  );
+                },
+              ),
+            ),
           );
         });
+      },
+    );
+  }
+}
+
+class DetailScreen extends StatefulWidget {
+  const DetailScreen(this.topic);
+  final String topic;
+
+  @override
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool switchValue = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text("Details"),
+      ),
+      child: Center(
+        child: Padding(padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min ,
+            children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text("A Switch"),
+            ),
+            CupertinoSwitch(
+              value: switchValue,
+              onChanged: (value) {
+                setState(() => switchValue = value);
+              },
+            ),
+          ],
+        ),
+      ])),
+      ),
+    );
   }
 }
