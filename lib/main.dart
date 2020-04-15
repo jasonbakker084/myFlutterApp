@@ -78,19 +78,40 @@ class _DetailScreenState extends State<DetailScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min ,
             children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text("A Switch"),
-            ),
-            CupertinoSwitch(
-              value: switchValue,
-              onChanged: (value) {
-                setState(() => switchValue = value);
-              },
-            ),
-          ],
-        ),
+       CupertinoButton(
+         child: Text("Launch action sheet"),
+         onPressed: () {
+           showCupertinoModalPopup<int>(
+             context: context,
+             builder: (context) {
+             return CupertinoActionSheet(
+               title: Text("Some choices"),
+               actions: [
+                 CupertinoActionSheetAction(
+                   child: Text("One!"),
+                   onPressed: () {
+                     Navigator.pop(context, 1);
+                   },
+                   isDefaultAction: true,
+                 ),
+                 CupertinoActionSheetAction(
+                   child: Text("Two!"),
+                   onPressed: () {
+                     Navigator.pop(context, 2);
+                   },
+                 ),
+                 CupertinoActionSheetAction(
+                   child: Text("Three!"),
+                   onPressed: () {
+                     Navigator.pop(context, 3);
+                   },
+                 ),
+               ],
+             );
+           },
+           );
+         },
+       )
       ])),
       ),
     );
